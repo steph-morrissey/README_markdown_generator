@@ -1,1 +1,1 @@
-# README Markdown Generator
+# README markdown generator
