@@ -1,15 +1,22 @@
 {
-  "name": "static-site",
+  "name": "readme_markdown_generator",
   "version": "1.0.0",
-  "description": "",
+  "description": "An application that allows README's to be generated based on users input",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steph-morrissey/README_markdown_generator.git"
+  },
+  "author": "Stephanie Morrissey",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/steph-morrissey/README_markdown_generator/issues"
+  },
+  "homepage": "https://github.com/steph-morrissey/README_markdown_generator#readme",
   "dependencies": {
-    "dotenv": "^8.0.0",
-    "inquirer": "^6.3.1"
+    "inquirer": "^7.1.0"
   }
 }
