@@ -92,7 +92,7 @@ function init() {
     axios.get(githubUrl).then((response) => {
       data.githubProfileUrl = response.data.avatar_url;
       data.email = response.data.email;
-      console.log(data);
+      writeToFile(data);
     });
   };
   inquirer.prompt(questions).then(processAnswers);

@@ -50,13 +50,13 @@ const generateCredits = (credits) => {
   ${credits}`;
 };
 
-//const generateQuestions = (githubProfileUrl, githubEmail) => {
-//  return `
-//  ## Questions
-//
-//  ${githubProfileUrl}
-//  - ${githubEmail}`;
-//};
+const generateQuestions = (githubProfileUrl, email) => {
+  return `
+  ## Questions
+
+  ![Image of ](${githubProfileUrl})
+  - ${email}`;
+};
 
 function generateMarkdown(data) {
   // Declared variables for markdown sections
@@ -68,8 +68,8 @@ function generateMarkdown(data) {
   const contributing = data.contributing;
   const tests = data.tests;
   const credits = data.credits;
-  //const githubProfileUrl = data.gitHubProfileUrl;
-  //const githubEmail = data.email;
+  const githubProfileUrl = data.githubProfileUrl;
+  const email = data.email;
 
   // Returns answers from user into README format
   const finalReadme = `
@@ -81,6 +81,7 @@ function generateMarkdown(data) {
   ${generateContributing(contributing)}  
   ${generateTests(tests)}
   ${generateCredits(credits)}
+  ${generateQuestions(githubProfileUrl, email)}
   `;
   console.log(finalReadme);
   return finalReadme;
