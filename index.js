@@ -1,5 +1,6 @@
 // Declaration of required variables
 const inquirer = require("inquirer");
+const axios = require("axios");
 const fs = require("fs");
 const generateMarkdown = require("./utils/generateMarkdown");
 const fileName = "myREADME.md";
@@ -86,7 +87,15 @@ function writeToFile(data) {
 // Calls inquirer module to ask user relevant README questions,
 // then, once all questions have been answered, call the writeToFile function
 function init() {
-  inquirer.prompt(questions).then(writeToFile);
+  const processAnswers = (data) => {
+    const githubUrl = `https://api.github.com/users/${data.github_username}`;
+    axios.get(githubUrl).then((response) => {
+      data.githubProfileUrl = response.data.avatar_url;
+      data.email = response.data.email;
+      console.log(data);
+    });
+  };
+  inquirer.prompt(questions).then(processAnswers);
 }
 
 init();
