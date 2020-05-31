@@ -1,6 +1,13 @@
 const axios = require("axios");
 
-const generateTile = (title) => `# ${title}`;
+const generateTile = (title, badges, license) => {
+  if (badges === true) {
+    return `# ${title} 
+    [![${license}](https://img.shields.io/badge/License-${license}-blue.svg)](https://shields.io/)`;
+  } else {
+    return `# ${title}`;
+  }
+};
 const generateDescription = (description) => {
   return `
   ## Description
@@ -8,28 +15,32 @@ const generateDescription = (description) => {
   ${description}
   `;
 };
+
 const generateInstallation = (installation) => {
   return ` 
   ## Installation
   
   To install all relevant dependencies for this project, run
 
-  ${installation}
+      ${installation}
   `;
 };
+
 const generateUsage = (usage) => {
   return `
   ## Usage
 
   To use this project, 
   
-  ${usage}`;
+      ${usage}
+
+  `;
 };
-const generateLicence = (license) => {
+const generateLicence = (licenseBody) => {
   return `
   ## License
 
-  ${license}`;
+  ${licenseBody}`;
 };
 const generateContributing = (contributing) => {
   return `
@@ -61,10 +72,12 @@ const generateQuestions = (githubProfileUrl, email) => {
 function generateMarkdown(data) {
   // Declared variables for markdown sections
   const title = data.title;
+  const badges = data.badges;
   const description = data.description;
   const installation = data.installation;
   const usage = data.usage;
   const license = data.license;
+  const licenseBody = data.licenseBody;
   const contributing = data.contributing;
   const tests = data.tests;
   const credits = data.credits;
@@ -73,11 +86,11 @@ function generateMarkdown(data) {
 
   // Returns answers from user into README format
   const finalReadme = `
-  ${generateTile(title)}
+  ${generateTile(title, badges, license)}
   ${generateDescription(description)}
   ${generateInstallation(installation)}
   ${generateUsage(usage)}
-  ${generateLicence(license)}
+  ${generateLicence(licenseBody)}
   ${generateContributing(contributing)}  
   ${generateTests(tests)}
   ${generateCredits(credits)}

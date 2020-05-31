@@ -34,11 +34,6 @@ const questions = [
   },
   {
     type: "input",
-    name: "license",
-    message: "What license does your project have?",
-  },
-  {
-    type: "input",
     name: "contributing",
     message: "Do you want other developers to help contribute to your project?",
   },
@@ -66,9 +61,12 @@ const questions = [
       "isc",
       "apache-2.0",
       "gpl-3.0",
-      "other",
-      "none",
     ],
+  },
+  {
+    type: "confirm",
+    name: "badges",
+    message: "Would you like to add a badge for this license?",
   },
 ];
 
@@ -89,9 +87,14 @@ function writeToFile(data) {
 function init() {
   const processAnswers = (data) => {
     const githubUrl = `https://api.github.com/users/${data.github_username}`;
+    const githubLicense = `https://api.github.com/licenses/${data.license}`;
     axios.get(githubUrl).then((response) => {
       data.githubProfileUrl = response.data.avatar_url;
       data.email = response.data.email;
+    });
+
+    axios.get(githubLicense).then((response) => {
+      data.licenseBody = response.data.body;
       writeToFile(data);
     });
   };
