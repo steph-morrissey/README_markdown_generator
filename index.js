@@ -85,20 +85,26 @@ function writeToFile(data) {
 // Calls inquirer module to ask user relevant README questions,
 // then, once all questions have been answered, call the writeToFile function
 function init() {
-  const processAnswers = (data) => {
+  const processGithubInfo = (data) => {
     const githubUrl = `https://api.github.com/users/${data.github_username}`;
-    const githubLicense = `https://api.github.com/licenses/${data.license}`;
     axios.get(githubUrl).then((response) => {
       data.githubProfileUrl = response.data.avatar_url;
       data.email = response.data.email;
-    });
-
-    axios.get(githubLicense).then((response) => {
-      data.licenseBody = response.data.body;
-      writeToFile(data);
+      data.name = response.data.name;
+      processLicenseInfo(data);
     });
   };
-  inquirer.prompt(questions).then(processAnswers);
+  const processLicenseInfo = (data) => {
+    console.log(data);
+    const githubLicense = `https://api.github.com/licenses/${data.license}`;
+    axios
+      .get(githubLicense)
+      .then((response) => {
+        data.licenseBody = response.data.body;
+      })
+      .then(writeToFile(data));
+  };
+  inquirer.prompt(questions).then(processGithubInfo);
 }
 
 init();

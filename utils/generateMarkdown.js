@@ -1,13 +1,11 @@
-const axios = require("axios");
-
 const generateTile = (title, badges, license) => {
   if (badges === true) {
-    return `# ${title} 
-    [![${license}](https://img.shields.io/badge/License-${license}-blue.svg)](https://shields.io/)`;
+    return `# ${title} \n[![${license}](https://img.shields.io/badge/License-${license}-blue.svg)](https://shields.io/)`;
   } else {
     return `# ${title}`;
   }
 };
+
 const generateDescription = (description) => {
   return `
   ## Description
@@ -16,44 +14,45 @@ const generateDescription = (description) => {
   `;
 };
 
-const generateInstallation = (installation) => {
-  return ` 
-  ## Installation
-  
-  To install all relevant dependencies for this project, run
+const generateTableOfContents = (data) => {
+  let tableOfContents = [];
+  Object.entries(data).forEach(([key]) => {
+    tableOfContents.push(`- [${key}](#${key})`);
+  });
+  return `
+  ## Table Of Contents
+  ${tableOfContents.join("\n")}`;
+};
 
-      ${installation}
-  `;
+const generateInstallation = (installation) => {
+  return `\n## Installation \nTo install all relevant dependencies for this project, run
+
+      ${installation}`;
 };
 
 const generateUsage = (usage) => {
-  return `
-  ## Usage
-
-  To use this project, 
-  
-      ${usage}
-
-  `;
+  return `## Usage \nTo use this project, 
+      ${usage}`;
 };
+
 const generateLicence = (licenseBody) => {
-  return `
-  ## License
-
-  ${licenseBody}`;
+  return `## License \n${licenseBody}`;
 };
+
 const generateContributing = (contributing) => {
   return `
   ## Contributing 
   
   ${contributing}`;
 };
+
 const generateTests = (tests) => {
   return `
   ## Tests
   
   ${tests}`;
 };
+
 const generateCredits = (credits) => {
   return `
   ## Credits
@@ -61,11 +60,11 @@ const generateCredits = (credits) => {
   ${credits}`;
 };
 
-const generateQuestions = (githubProfileUrl, email) => {
+const generateQuestions = (githubProfileUrl, name, email) => {
   return `
   ## Questions
 
-  ![Image of ](${githubProfileUrl})
+  ![Image of ${name}](${githubProfileUrl}.png "Image of ${name}")
   - ${email}`;
 };
 
@@ -81,6 +80,7 @@ function generateMarkdown(data) {
   const contributing = data.contributing;
   const tests = data.tests;
   const credits = data.credits;
+  const name = data.name;
   const githubProfileUrl = data.githubProfileUrl;
   const email = data.email;
 
@@ -88,15 +88,15 @@ function generateMarkdown(data) {
   const finalReadme = `
   ${generateTile(title, badges, license)}
   ${generateDescription(description)}
+  ${generateTableOfContents(data)}
   ${generateInstallation(installation)}
   ${generateUsage(usage)}
   ${generateLicence(licenseBody)}
   ${generateContributing(contributing)}  
   ${generateTests(tests)}
   ${generateCredits(credits)}
-  ${generateQuestions(githubProfileUrl, email)}
+  ${generateQuestions(githubProfileUrl, name, email)}
   `;
-  console.log(finalReadme);
   return finalReadme;
 }
 
