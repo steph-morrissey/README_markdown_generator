@@ -33,20 +33,10 @@ const questions = [
     message: "What are the specific instructions for how to use the project?",
   },
   {
-    type: "input",
-    name: "contributing",
-    message: "Do you want other developers to help contribute to your project?",
-  },
-  {
-    type: "input",
+    type: "insert",
     name: "tests",
-    message: "Are there any tests for this project?",
-  },
-  {
-    type: "input",
-    name: "credits",
     message:
-      "List all the collaborators for this project, if any, and provide GitHub profile links",
+      "Enter a description of what each test is and how you would run them (ex: Test to run this feature, npm test file.js)",
   },
   {
     type: "list",
@@ -64,9 +54,15 @@ const questions = [
     ],
   },
   {
-    type: "confirm",
-    name: "badges",
-    message: "Would you like to add a badge for this license?",
+    type: "input",
+    name: "contributing",
+    message: "What is the link to the GitHub repository for your project?",
+  },
+  {
+    type: "input",
+    name: "questions",
+    message:
+      "Please provide any comments you would like to add if someone wants to contact you",
   },
 ];
 
@@ -88,21 +84,19 @@ function init() {
   const processGithubInfo = (data) => {
     const githubUrl = `https://api.github.com/users/${data.github_username}`;
     axios.get(githubUrl).then((response) => {
-      data.githubProfileUrl = response.data.avatar_url;
+      data.githubAvatarUrl = response.data.avatar_url;
+      data.githubHtmlUrl = response.data.html_url;
       data.email = response.data.email;
       data.name = response.data.name;
       processLicenseInfo(data);
     });
   };
   const processLicenseInfo = (data) => {
-    console.log(data);
     const githubLicense = `https://api.github.com/licenses/${data.license}`;
-    axios
-      .get(githubLicense)
-      .then((response) => {
-        data.licenseBody = response.data.body;
-      })
-      .then(writeToFile(data));
+    axios.get(githubLicense).then((response) => {
+      data.licenseBody = response.data.body;
+      writeToFile(data);
+    });
   };
   inquirer.prompt(questions).then(processGithubInfo);
 }
