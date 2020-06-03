@@ -44,7 +44,7 @@ const generateLicence = (licenseBody) => {
 };
 
 // Generates contribution outline if user confirms it
-const generateContributing = () => {
+const generateContributing = (contributing) => {
   return `
   ## Contributing
   
@@ -52,21 +52,16 @@ const generateContributing = () => {
 
   1. Fork
   2. Clone and setup 
-      git clone <REPO LINK>
-      cd <FILE PATH>
-      <INSTALL DEPENDENCIES (ex: npm install ...)
+         git clone ${contributing}
   3. Develop
   4. Pull request
 `;
 };
 
 // Generates users tests based on descriptions given by user
-const generateTests = (testsConfirm, tests) => {
-  if (testsConfirm) {
-    const testsArray = tests.split(", ");
-    return `## Tests\n${testsArray.join("\n\n")}`;
-  }
-  return "";
+const generateTests = (tests) => {
+  const testsArray = tests.split(", ");
+  return `## Tests\n${testsArray.join("\n\n")}`;
 };
 
 // Generates users full name and email from
@@ -77,12 +72,14 @@ const generateCredits = (name, githubHtmlUrl) => {
   ${name} - <${githubHtmlUrl}>`;
 };
 
-const generateQuestions = (githubAvatarUrl, name, email) => {
+const generateQuestions = (githubAvatarUrl, name, email, questions) => {
   return `
   ## Questions
 
   ![Image of ${name}](${githubAvatarUrl}.png "Image of ${name}")
-  - ${email}`;
+  - ${email}
+  
+  ${questions}`;
 };
 
 function generateMarkdown(data) {
@@ -93,12 +90,13 @@ function generateMarkdown(data) {
   const usage = data.usage;
   const license = data.license;
   const licenseBody = data.licenseBody;
-  const testsConfirm = data.testsConfirm;
+  const contributing = data.contributing;
   const tests = data.tests;
   const name = data.name;
   const githubAvatarUrl = data.githubAvatarUrl;
   const githubHtmlUrl = data.githubHtmlUrl;
   const email = data.email;
+  const questions = data.questions;
 
   // Returns answers from user into README format
   const finalReadme = `
@@ -108,10 +106,10 @@ function generateMarkdown(data) {
   ${generateInstallation(installation)}
   ${generateUsage(usage)}
   ${generateLicence(licenseBody)}
-  ${generateContributing()} 
-  ${generateTests(testsConfirm, tests)}
+  ${generateContributing(contributing)} 
+  ${generateTests(tests)}
   ${generateCredits(name, githubHtmlUrl)}
-  ${generateQuestions(githubAvatarUrl, name, email)}
+  ${generateQuestions(githubAvatarUrl, name, email, questions)}
   `;
   return finalReadme;
 }

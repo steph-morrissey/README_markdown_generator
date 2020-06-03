@@ -82,6 +82,7 @@ function writeToFile(data) {
 // then, once all questions have been answered, call the writeToFile function
 function init() {
   const processGithubInfo = (data) => {
+    // Retrieves data about user from username provided
     const githubUrl = `https://api.github.com/users/${data.github_username}`;
     axios.get(githubUrl).then((response) => {
       data.githubAvatarUrl = response.data.avatar_url;
@@ -91,6 +92,7 @@ function init() {
       processLicenseInfo(data);
     });
   };
+  // Retrieves license information depending on option chosen by user
   const processLicenseInfo = (data) => {
     const githubLicense = `https://api.github.com/licenses/${data.license}`;
     axios.get(githubLicense).then((response) => {
